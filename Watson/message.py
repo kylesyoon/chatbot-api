@@ -2,8 +2,8 @@ import falcon
 import requests
 import json
 
-from keys import WATSON_USERNAME, WATSON_PASSWORD
-from constants import WORKSPACES_URL, MESSAGE_PATH, API_VERSION
+from Watson.keys import WATSON_USERNAME, WATSON_PASSWORD
+from Watson.constants import WORKSPACES_URL, MESSAGE_PATH, API_VERSION
 
 class Message(object):
     def __init__(self):
