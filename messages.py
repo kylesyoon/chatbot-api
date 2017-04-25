@@ -1,17 +1,15 @@
 import falcon
 import requests
-from keys import WATSON_CREDENTIALS
 import json
 
-WORKSPACES_URL = 'https://gateway.watsonplatform.net/conversation/api/v1/workspaces/'
-MESSAGE_PATH = '/message'
-API_VERSION = '2017-04-21'
+from keys import WATSON_USERNAME, WATSON_PASSWORD
+from constants import WORKSPACES_URL, MESSAGE_PATH, API_VERSION
 
 class Message(object):
     def __init__(self):
         #get workspace id for office assistant
         version = {'version': API_VERSION}
-        response = requests.get(WORKSPACES_URL, auth=(WATSON_CREDENTIALS['username'], WATSON_CREDENTIALS['password']), params=version)
+        response = requests.get(WORKSPACES_URL, auth=(WATSON_USERNAME, WATSON_PASSWORD), params=version)
         json = response.json()
         workspaces = json['workspaces']
         office_workspace = [d for d in workspaces if d['name'] == 'Office Assistant'][0]
@@ -32,7 +30,7 @@ class Message(object):
             data['input'] = {'text': text}
         if self.context is not None:
             data['context'] = self.context
-        response = requests.post(message_url, auth=(WATSON_CREDENTIALS['username'], WATSON_CREDENTIALS['password']), params=params, headers=headers, data=json.dumps(data))
+        response = requests.post(message_url, auth=(WATSON_USERNAME, WATSON_PASSWORD), params=params, headers=headers, data=json.dumps(data))
         json_response = response.json()
         if 'output' in json_response:
             #send back output
