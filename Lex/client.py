@@ -1,10 +1,13 @@
 import boto3
-import falcon
+import uuid
+from Lex.constants import BOT_NAME, BOT_ALIAS, LEX_RUNTIME
 
-class Messages(object):
-    def on_post(self, req, resp):
-        client = boto3.client('lex-runtime')
-        response = client.post_text(botName='PizzaBot', botAlias='BETA', userId='abcd1234', inputText='I would like a pizza')
-        print(response)
-        resp.body = response['message']
-        resp.status = falcon.HTTP_200
+class Client(object):
+    def __init__(self):
+        self.user_id = uuid.uuid4()
+        self.boto = boto3.client(LEX_RUNTIME)
+
+    def post_text(self, text):
+        response = self.boto.post_text(botName=BOT_NAME, botAlias=BOT_ALIAS, userId=str(self.user_id), inputText=text)
+        if response['message'] is not None:
+            return response['message']

@@ -1,13 +1,13 @@
 import falcon
-from Watson import messages
-from Lex import client
+import Watson.message
+import Lex.message
 
 api = application = falcon.API()
 
-messages = messages.Message()
+#lex routes
+lex_message = Lex.message.Message()
+api.add_route('/lex/message', lex_message)
 
-api.add_route('/watson/message', messages)
-
-client = client.Messages()
-
-api.add_route('/lex/message', client)
+#watson routes
+watson_message = Watson.message.Message()
+api.add_route('/watson/message', watson_message)
