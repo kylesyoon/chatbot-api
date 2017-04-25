@@ -6,6 +6,7 @@ class Message(object):
         self.client = Client()
 
     def on_post(self, req, resp):
-        message = self.client.post_text('I would like a pizza')
+        text = req.stream.read().decode('utf-8')
+        message = self.client.post_text(text)
         resp.body = message
         resp.status = falcon.HTTP_200
