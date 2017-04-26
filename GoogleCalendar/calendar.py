@@ -10,12 +10,11 @@ from oauth2client.file import Storage
 
 import datetime
 
-try:
-    import argparse
-    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-except ImportError:
-    flags = None
-    print("FUCK")
+# try:
+#     import argparse
+#     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
+# except ImportError:
+#     flags = None
 
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/calendar-python-quickstart.json
@@ -23,7 +22,7 @@ SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 CLIENT_SECRET_FILE = './client_secret.json'
 APPLICATION_NAME = 'chatbot api'
 
-class CalendarClient(object):
+class Calendar(object):
     def get_credentials():
         """Gets valid user credentials from storage.
 
@@ -45,11 +44,11 @@ class CalendarClient(object):
         if not credentials or credentials.invalid:
             flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
             flow.user_agent = APPLICATION_NAME
-            if flags:
-                credentials = tools.run_flow(flow, store, flags)
-                print(flags)
-            else: # Needed only for compatibility with Python 2.6
-                credentials = tools.run(flow, store)
+            # if flags:
+            #     credentials = tools.run_flow(flow, store, flags)
+            #     print(flags)
+            # else: # Needed only for compatibility with Python 2.6
+            credentials = tools.run(flow, store)
             print('Storing credentials to ' + credential_path)
         return credentials
 
@@ -59,7 +58,7 @@ class CalendarClient(object):
         Creates a Google Calendar API service object and outputs a list of the next
         10 events on the user's calendar.
         """
-        credentials = get_credentials()
+        credentials = Calendar.get_credentials()
         http = credentials.authorize(httplib2.Http())
         service = discovery.build('calendar', 'v3', http=http)
 
@@ -73,5 +72,6 @@ class CalendarClient(object):
         if not events:
             print('No upcoming events found.')
         for event in events:
-            start = event['start'].get('dateTime', event['start'].get('date'))
-            print(start, event['summary'])
+            # start = event['start'].get('dateTime', event['start'].get('date'))
+            # print(start, event['summary'])
+            print(event)
