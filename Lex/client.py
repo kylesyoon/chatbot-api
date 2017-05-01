@@ -9,15 +9,16 @@ class Client(object):
         self.user_id = uuid.uuid4()
         self.boto = boto3.client(LEX_RUNTIME)
 
-    def post_text(self, text):
-        response = self.boto.post_text(botName=BOT_NAME, botAlias=BOT_ALIAS, userId=str(self.user_id), inputText=text)
+    def post_message(self, message):
+        response = self.boto.post_text(botName=BOT_NAME, botAlias=BOT_ALIAS, userId=str(self.user_id), inputText=message)
+
         if 'intentName' in response:
             intent_name = response['intentName']
             intent = Intent.enum_from_string(intent_name)
 
             if intent == Intent.TODAYS_SCHEDULE:
                 #get schedule from google
-                Calendar.get_todays_schedule()
+                return Calendar.get_todays_schedule()
 
         if 'message' in response:
             return response['message']

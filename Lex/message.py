@@ -6,7 +6,11 @@ class Message(object):
         self.client = Client()
 
     def on_post(self, req, resp):
+        #decode the incoming message
         text = req.stream.read().decode('utf-8')
-        message = self.client.post_text(text)
+        #ask lex what this message is
+        message = self.client.post_message(text)
+        print(message)
+        #send back the message
         resp.body = message
         resp.status = falcon.HTTP_200
